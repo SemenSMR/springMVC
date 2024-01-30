@@ -6,6 +6,7 @@ import org.example.repository.PostRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -16,12 +17,13 @@ public class PostService {
     this.repository = repository;
   }
 
-  public Collection<Post> all() {
+  public List<Post> all() {
     return repository.all();
   }
 
-  public Optional<Post> getById(long id) {
-    return Optional.ofNullable(repository.getById(id));
+  public Post getById(long id) {
+    return repository.getById(id).orElseThrow(() ->
+            new NotFoundException(String.format("Запись с id=%d отсутствует", id)));
   }
 
   public Post save(Post post) {

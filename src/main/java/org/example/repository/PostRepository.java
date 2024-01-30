@@ -4,32 +4,18 @@ import org.example.model.Post;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 // Stub
-@Repository
-public class PostRepository {
-    private final ConcurrentHashMap<Long, Post> posts = new ConcurrentHashMap<>();
-    private final AtomicLong nextId = new AtomicLong(1);
+public interface PostRepository {
+    List<Post> all();
 
-    public Collection<Post> all() {
-        return posts.values();
-    }
+    Optional<Post> getById(long id);
 
-    public Post getById(long id) {
-        return posts.get(id);
-    }
+    Post save(Post post);
 
-    public Post save(Post post) {
-        if (post.getId() == 0) {
-            post.setId(nextId.getAndIncrement());
-        }
-        posts.put(post.getId(), post);
-        return post;
-    }
-
-    public void removeById(long id) {
-       posts.remove(id);
-    }
+    void removeById(long id);
 }
